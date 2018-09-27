@@ -1,6 +1,24 @@
 import * as React from "react"
 import { shallow, ShallowWrapper } from "enzyme"
 
+class Emojictionnary {
+	constructor(private _items: { [word: string]: string }) {}
+
+	translate(word: string): string {
+		const _word: string = word.toLowerCase()
+
+		const match = Object.keys(this._items).find(
+			(w: string) => _word.indexOf(w) > -1,
+		)
+
+		return this._items[match as any] || word
+	}
+}
+const emojictionnary = new Emojictionnary({
+	unicorn: "🦄",
+	love: "😍",
+})
+
 class HappInput extends React.Component {
 	state = { value: "" }
 
@@ -18,23 +36,6 @@ class HappInput extends React.Component {
 	}
 
 	_handleInputChange = (value: string) => {
-		const emojictionnary = new class {
-			private _items = {
-				unicorn: "🦄",
-				love: "😍",
-			}
-
-			translate(word: string): string {
-				const _word: string = word.toLowerCase()
-
-				const match = Object.keys(this._items).find(
-					(w: string) => _word.indexOf(w) > -1,
-				)
-
-				return this._items[match as any] || word
-			}
-		}()
-
 		const _value = value
 			.trim()
 			.split(" ")
